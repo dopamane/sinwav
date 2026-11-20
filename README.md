@@ -1,2 +1,8 @@
 # sinwav
-sine wav synthesis
+sin wav synthesizer
+
+Development
+
+```
+cabal build
+```

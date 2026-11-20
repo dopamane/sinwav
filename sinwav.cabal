@@ -1,51 +1,45 @@
 cabal-version:      3.0
 name:               sinwav
 version:            0.1.0.0
-synopsis:           sine wav synthesis
--- description:
+synopsis:           sin wav synthesizer
 homepage:           https://github.com/dopamane/sinwav
 license:            MIT
 license-file:       LICENSE
 author:             dopamane
 maintainer:         dwc1295@gmail.com
--- copyright:
+copyright:          David Cox
 category:           Sound
 build-type:         Simple
 extra-doc-files:    CHANGELOG.md
--- extra-source-files:
+                    README.md
 
-common warnings
-    ghc-options: -Wall
+source-repository head
+  type: git
+  location: https://github.com/dopamane/sinwav
 
 library
-    import:           warnings
-    exposed-modules:  MyLib
-    -- other-modules:
-    -- other-extensions:
-    build-depends:    base ^>=4.20.2.0
-    hs-source-dirs:   lib
-    default-language: Haskell2010
+  default-language: Haskell2010
+  ghc-options:      -Wall -O2
+  hs-source-dirs:   lib
+  exposed-modules:  MyLib
+  build-depends:    base < 5
 
 executable sinwav
-    import:           warnings
-    main-is:          Main.hs
-    -- other-modules:
-    -- other-extensions:
-    build-depends:
-        base ^>=4.20.2.0,
-        sinwav
+  default-language: Haskell2010
+  ghc-options:      -Wall -O2 -threaded
+  hs-source-dirs:   exe
+  main-is:          Main.hs
+  build-depends:
+    base < 5,
+    sinwav
 
-    hs-source-dirs:   exe
-    default-language: Haskell2010
 
-test-suite sinwav-test
-    import:           warnings
-    default-language: Haskell2010
-    -- other-modules:
-    -- other-extensions:
-    type:             exitcode-stdio-1.0
-    hs-source-dirs:   test
-    main-is:          Main.hs
-    build-depends:
-        base ^>=4.20.2.0,
-        sinwav
+test-suite test
+  default-language: Haskell2010
+  ghc-options:      -Wall -O2 -threaded
+  hs-source-dirs:   test
+  type:             exitcode-stdio-1.0
+  main-is:          Main.hs
+  build-depends:
+    base < 5,
+    sinwav
