@@ -10,8 +10,8 @@ import Sound.SinWav
 
 main :: IO ()
 main = do
-  CLI f <- customExecParser prefs' $ pinfo $ showVersion version
-  BS.putStr $ runPut $ putRap $ sinWav f
+  CLI f t <- customExecParser prefs' $ pinfo $ showVersion version
+  BS.putStr $ runPut $ putRap $ sinWav f t
 
 prefs' :: ParserPrefs
 prefs' = prefs $ showHelpOnError <> showHelpOnEmpty
@@ -20,7 +20,9 @@ pinfo :: String -> ParserInfo CLI
 pinfo v = info (parser <**> simpleVersioner v <**> helper) $
   progDesc "sine wave synthesizer"
 
-data CLI = CLI Double
+data CLI = CLI Double Double
 
 parser :: Parser CLI
-parser = CLI <$> option auto (short 'f' <> long "freq" <> metavar "DBL" <> help "frequency Hz")
+parser = CLI
+  <$> option auto (short 'f' <> long "freq" <> metavar "DBL" <> help "frequency Hz")
+  <*> option auto (short 't' <> long "time" <> metavar "DBL" <> help "duration sec")

@@ -6,8 +6,9 @@ import Data.Rap
 
 sinWav
   :: Double -- ^ freq Hz
+  -> Double -- ^ duration sec
   -> Rap
-sinWav f = [Stanza "RIFF" "WAVE" [fmt, dat f]]
+sinWav f t = [Stanza "RIFF" "WAVE" [fmt, dat f t]]
 
 fmt :: Riff
 fmt = Verse "fmt " $ runPut $ do
@@ -21,9 +22,10 @@ fmt = Verse "fmt " $ runPut $ do
 
 dat
   :: Double -- ^ freq Hz
+  -> Double -- ^ duration sec
   -> Riff
-dat f = Verse "data" $ runPut $ mconcat
-  [putInt16le $ norm $ sin (2 * pi * f * i / 44100) | i <- [0 .. 44100 - 1]]
+dat f t = Verse "data" $ runPut $ foldMap putInt16le
+  [norm $ sin (2 * pi * f * i / 44100) | i <- [0 .. 44100 * t - 1]]
 
 norm :: Double -> Int16
 norm d = clip $ round $ d * 32768
