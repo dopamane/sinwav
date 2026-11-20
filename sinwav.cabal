@@ -32,10 +32,13 @@ executable sinwav
   ghc-options:      -Wall -O2 -threaded
   hs-source-dirs:   exe
   main-is:          Main.hs
+  other-modules:    Paths_sinwav
+  autogen-modules:  Paths_sinwav
   build-depends:
     base < 5,
     binary,
     bytestring,
+    optparse-applicative,
     rap,
     sinwav
 

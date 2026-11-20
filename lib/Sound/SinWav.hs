@@ -4,8 +4,10 @@ import Data.Binary.Put
 import Data.Int
 import Data.Rap
 
-sinWav :: Rap
-sinWav = [Stanza "RIFF" "WAVE" [fmt, dat]]
+sinWav
+  :: Double -- ^ freq Hz
+  -> Rap
+sinWav f = [Stanza "RIFF" "WAVE" [fmt, dat f]]
 
 fmt :: Riff
 fmt = Verse "fmt " $ runPut $ do
@@ -17,9 +19,11 @@ fmt = Verse "fmt " $ runPut $ do
   putWord16le 16
   putWord16le 0
 
-dat :: Riff
-dat = Verse "data" $ runPut $ mconcat
-  [putInt16le $ norm $ sin (420 * 2 * pi * i / 44100) | i <- [0 .. 44100 - 1]]
+dat
+  :: Double -- ^ freq Hz
+  -> Riff
+dat f = Verse "data" $ runPut $ mconcat
+  [putInt16le $ norm $ sin (2 * pi * f * i / 44100) | i <- [0 .. 44100 - 1]]
 
 norm :: Double -> Int16
 norm d = clip $ round $ d * 32768
