@@ -28,10 +28,13 @@ dat f t = Verse "data" $ runPut $ foldMap putInt16le
   [norm $ sin (2 * pi * f * i / 44100) | i <- [0 .. 44100 * t - 1]]
 
 norm :: Double -> Int16
-norm d = clip $ round $ d * 32768
+norm d
+  | d > 0 = fromIntegral $ min (maxb :: Integer) $ round (d * maxb)
+  | d < 0 = fromIntegral $ max (minb :: Integer) $ round (d * minb)
+  | otherwise = 0
 
-clip :: Integer -> Int16
-clip n
-  | n > fromIntegral (maxBound :: Int16) = maxBound
-  | n < fromIntegral (minBound :: Int16) = minBound
-  | otherwise = fromIntegral n
+maxb :: Num a => a
+maxb = fromIntegral (maxBound :: Int16)
+
+minb :: Num a => a
+minb = fromIntegral (minBound :: Int16)
